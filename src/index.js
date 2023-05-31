@@ -9,6 +9,7 @@ const port = 3000;
 const route = require("./routes");
 const db = require("./config/db");
 
+app.use(methodOverride('_method'))
 //connect to DB
 db.connect();
 
@@ -19,7 +20,6 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(methodOverride('_method'))
 
 
 //HTTP logger
