@@ -9,10 +9,10 @@ const port = 3000;
 const route = require("./routes");
 const db = require("./config/db");
 
-app.use(methodOverride('_method'))
 //connect to DB
 db.connect();
 
+app.use(methodOverride('_method'))
 app.use(express.static(__dirname + "/public"));
 app.use(
   express.urlencoded({
