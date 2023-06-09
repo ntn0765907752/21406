@@ -9,7 +9,7 @@ function route(app) {
     app.use('/news', newsRouter);
     app.use('/me', meRouter);
     app.use('/courses', coursesRouter);
-    app.use('/account', accountRouter);
+    app.use('/accounts', accountRouter);
     
 
     app.use('/', siteRouter);

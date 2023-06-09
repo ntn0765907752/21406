@@ -7,7 +7,7 @@ const router = express.Router();
 // Lấy dữ liệu từ database
 router.get('/', (req, res, next) => {
     const page = parseInt(req.query.page);
-    const pageSize = 2;
+    const pageSize = 4;
 
     if (page) {
         if(page < 0){
@@ -18,7 +18,14 @@ router.get('/', (req, res, next) => {
             .skip(skip)
             .limit(pageSize)
             .then(data => {
-                res.json(data);
+                AccountModel.countDocuments({}).then((total)=>{
+                    // alert(data.length)
+                    var totalPage = Math.ceil(total/pageSize);
+                    res.json({
+                        totalPage:totalPage,
+                        data :data,
+                    });
+                })
             })
             .catch(err => {
                 res.status(500).json('Error server');
@@ -26,7 +33,7 @@ router.get('/', (req, res, next) => {
     } else {
         AccountModel.find({})
             .then(data => {
-                res.json(data);
+              res.json(data);
             })
             .catch(err => {
                 res.status(500).json('Error Server');

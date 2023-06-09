@@ -4,7 +4,6 @@ const morgan = require("morgan");
 const methodOverride = require('method-override');
 const handlebars = require("express-handlebars").engine;
 const bodyParser = require('body-parser');
-// const AccountModel = require('./models/account')
 
 const app = express();
 const port = 3000;
