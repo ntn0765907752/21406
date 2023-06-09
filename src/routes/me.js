@@ -5,6 +5,7 @@ const AccountModel = require('../app/models/Account');
 
 router.get('/stored/courses', meController.storedCourses);
 router.get('/trash/courses', meController.trashCourses);
+
 router.post('/register',(req, res, next) => {
     var username = req.body.username
     var password = req.body.password
