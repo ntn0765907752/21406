@@ -150,11 +150,11 @@ class AccountController {
         next();
       }
     } catch (err) {
-      return res.redirect('../login');
+      return res.redirect('../accounts/login');
     }
   }
   handleRequest(req, res, next) {
-    res.json("welcome");
+    res.json("Site user");
   }
 }
 

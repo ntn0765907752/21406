@@ -23,7 +23,7 @@
         let expires = "expires="+ d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
-    function login(){
+    function login(req, res, next) {
         $.ajax({
             url:'/accounts/login',
             type: 'POST',
@@ -32,9 +32,10 @@
                 password: $('#password').val()
             }
         })
-        . then(data => {
+        .then(data => {
             console.log(data);
             setCookie('token', data.token,1);
+            window.location.href = '/enterprise'
 
         })
         .catch(error => {
