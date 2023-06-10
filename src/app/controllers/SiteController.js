@@ -54,6 +54,9 @@ class SiteController {
 
 
     }
+    function(req, res, next) {
+        res.json("Sửa thành công")
+    }
 
 
 
