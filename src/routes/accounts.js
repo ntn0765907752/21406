@@ -1,109 +1,66 @@
 const express = require("express");
-const AccountModel = require("../app/models/Account");
+// const AccountModel = require("../app/models/Account");
 const router = express.Router();
 
-// Lấy dữ liệu từ database
-router.get("/", (req, res, next) => {
-  const page = parseInt(req.query.page);
-  const pageSize = 6;
-  if (page) {
-    if (page < 0) {
-      page = 1;
-    }
-    const skip = (parseInt(page) - 1) * pageSize;
-    AccountModel.find({})
-      .skip(skip)
-      .limit(pageSize)
-      .then((data) => {
-        AccountModel.countDocuments({}).then((total) => {
-          // alert(data.length)
-          var totalPage = Math.ceil(total / pageSize);
-          res.json({
-            total: total,
-            totalPage: totalPage,
-            data: data,
-          });
-        });
-      })
-      .catch((err) => {
-        res.status(500).json("Error server");
-      });
-  } else {
-    AccountModel.find({})
-      .then((data) => {
-        res.json(data);
-      })
-      .catch((err) => {
-        res.status(500).json("Error Server");
-      });
-  }
-});
+const accountController = require('../app/controllers/AccountController');
 
-// Lấy dữ liệu từ database
-router.get("/getone/:id", (req, res, next) => {
-  const id = req.params.id;
-  AccountModel.findById(id)
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      res.status(500).json("Error Server");
-    });
-});
+router.get('/', accountController.get);
+router.get("/login", accountController.login );
+router.get("/private/:token", accountController.private, accountController.handleRequest );
+router.get('/:id', accountController.getOne);
+router.post("/login", accountController.authentication );
+router.post("/", accountController.addAcount); //Thêm mới dữ liệu trong db
+router.put("/:id", accountController.update ); //update dữu liệu trong db
+router.delete("/:id", accountController.delete );//xóa dữ liệu trong db
 
-//Thêm mới dữ liệu trong db
-router.post("/", (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  AccountModel.findOne({
-    username: username,
-  })
-    .then((data) => {
-      if (data) {
-        res.json("User already exists");
-      } else {
-        return AccountModel.create({
-          username: username,
-          password: password,
-        });
-      }
+router.post('/êregister',(req, res, next) => {
+    var username = req.body.username
+    var password = req.body.password
+    AccountModel.findOne({ 
+        username: username, 
     })
-    .then((data) => {
-      res.json(" Register succesfully");
+    .then(data => {
+        if(data){
+            res.json('User already exists')
+        } else {
+            return AccountModel.create({
+                username: username,
+                password: password
+            })
+        }
     })
-    .catch((err) => {
-      res.status(500).json("Not Register Successfully");
-    });
-});
+    .then(data => {
+        res.json(' Register succesfully')
 
-//update dữu liệu trong db
-router.put("/:id", (req, res, next) => {
-  const id = req.params.id;
-  const newPassword = req.body.newPassword;
-
-  AccountModel.findByIdAndUpdate(id, {
-    password: newPassword,
-  })
-    .then((data) => {
-      res.json("Update account successfully");
     })
-    .catch((err) => {
-      res.status(500).json("Error Server");
-    });
-});
+    .catch(err=>{
+        res.status(500).json('Not Register Successfully')
 
-//xóa dữ liệu trong db
-router.delete("/:id", (req, res, next) => {
-  const id = req.params.id;
-  AccountModel.deleteOne({
-    _id: id,
-  })
-    .then((data) => {
-      res.json("Delete account successfully");
     })
-    .catch((data) => {
-      res.status(500).json("Error Server");
-    });
-});
+
+})
+
+router.post('/llogin',(req, res, next) => {
+    var username = req.body.username
+    var password = req.body.password
+
+    AccountModel.findOne({ 
+        username: username, 
+        password: password
+    })
+    .then(data=>{
+        if( data){
+            res.json('Login Successfully')
+        } else {
+            res.status(300).json('Account not exist')
+        }
+
+
+    })
+    .catch(err=>{
+        res.status(400).json('Not Login Successfully')
+    })
+})
+
 
 module.exports = router;

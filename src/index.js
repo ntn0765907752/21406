@@ -4,6 +4,8 @@ const morgan = require("morgan");
 const methodOverride = require('method-override');
 const handlebars = require("express-handlebars").engine;
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = 3000;
@@ -15,6 +17,16 @@ const db = require("./config/db");
 
 //connect to DB
 db.connect();
+
+app.use(cookieParser())
+
+//cors
+app.use((req, res, next) => {
+  res.append('Access-Control-Allow-Origin', ['*']);
+  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
 app.use(methodOverride('_method'));
 //Custom middleware

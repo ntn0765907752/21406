@@ -91,5 +91,3 @@ function loadPage(page){
   
 })
 loadPage(1)
-
-$ajax.
