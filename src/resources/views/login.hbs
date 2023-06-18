@@ -1,8 +1,10 @@
 
+    <script src="../../public/js/jquery-3.7.0.min.js"></script>
+
 <form onsubmit="event.preventDefault(); login()">
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
-    <input type="text" class="form-control" id="username" aria-describedby="emailHelp">
+    <input type="text" class="form-control" id="email" aria-describedby="emailHelp">
     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
   <div class="form-group">
@@ -15,6 +17,9 @@
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
 </form>
+ <footer class=" footer-alt">
+    <p class="text-muted">Don't have an account? <a href="/accounts/register" class="text-muted ml-1"><b>Sign Up</b></a></p>
+</footer>
 
 <script>
     function setCookie(cname, cvalue, exdays) {
@@ -28,14 +33,16 @@
             url:'/accounts/login',
             type: 'POST',
             data: {
-                username: $('#username').val(),
+                email: $('#email').val(),
                 password: $('#password').val()
             }
         })
-        .then(data => {
-            console.log(data);
+        .then(data => {//Nếu thành công
+            {{!-- console.log(data); --}}
             setCookie('token', data.token,1);
-            window.location.href = '/enterprise'
+            {{!-- window.location.href = '/accounts/private' --}}
+            window.location.href = '/'
+
 
         })
         .catch(error => {
@@ -43,3 +50,6 @@
         })
     }
 </script>
+
+
+                    

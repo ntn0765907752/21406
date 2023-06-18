@@ -1,20 +1,19 @@
 <h1>Đây là trang doanh nghiệp</h1>
-<button>Edit</button>
+<button id="btn-edit">Edit</button>
 <script>
+    
     $("#btn-edit").click(function(){
         var token =getCookie("token")
         $.ajax({
-            url:"//enterprise/edit",
+            url:"/enterprise/edit",
+            type: 'POST',
             headers:{
                 token:token
-            }
+            }, 
         }).then(function(data){
             console.log(data)
 
         })
-
-
-
     })
     function getCookie(cname) {
         let name = cname + "=";

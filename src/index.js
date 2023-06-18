@@ -32,7 +32,7 @@ app.use(methodOverride('_method'));
 //Custom middleware
 app.use(SortMiddleware);
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(
   express.urlencoded({
     extended: true,

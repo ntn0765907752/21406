@@ -53,25 +53,28 @@ class AccountController {
         });
     }
   }
+  //GET /accounts/register
   //POST//Account
-  addAcount(req, res, next) {
-    const username = req.body.username;
+  register(req, res, next) {
+    const fullname = req.body.fullname;
+    const email = req.body.email;
     const password = req.body.password;
     AccountModel.findOne({
-      username: username,
+      email: email,
     })
       .then((data) => {
         if (data) {
           res.json("User already exists");
         } else {
           return AccountModel.create({
-            username: username,
+            fullname: fullname,
+            email: email,
             password: password,
           });
         }
       })
       .then((data) => {
-        res.json(" Register succesfully");
+        res.render("login");
       })
       .catch((err) => {
         res.status(500).json("Not Register Successfully");
@@ -106,17 +109,21 @@ class AccountController {
         res.status(500).json("Error Server");
       });
   }
+  showRegister(req, res, next) {
+    res.render("register");
+  }
 
   login(req, res, next) {
     res.render("login");
   }
 
+
   authentication(req, res, next) {
-    var username = req.body.username;
+    var email = req.body.email;
     var password = req.body.password;
 
     AccountModel.findOne({
-      username: username,
+      email: email,
       password: password,
     })
       .then((data) => {
@@ -154,7 +161,7 @@ class AccountController {
     }
   }
   handleRequest(req, res, next) {
-    res.json("Site user");
+    res.render("home");
   }
 }
 
